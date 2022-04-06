@@ -6,11 +6,12 @@ namespace zich
     class Matrix
     {
     private:
-        std::vector<double> mat;
         int row;
         int col;
 
     public:
+            std::vector<double> mat;
+
         Matrix(int, int);
         Matrix(std::vector<double>, int row, int col);
         static void check_matrix_size(const Matrix &, const Matrix &);
@@ -57,7 +58,7 @@ namespace zich
         friend std::istream &operator>>(std::istream &in, Matrix &num);
 
         //-----------------------------
-        // Friend Operators
+        // Friend Operators & mult
         //-----------------------------
 
         Matrix operator*(const double);

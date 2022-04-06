@@ -49,7 +49,7 @@ TEST_CASE("Good")
     Matrix a1{identity, 3, 3};
     Matrix b1{arr, 3, 3};
     Matrix c1{{3, 6, -6, 15, 3, -3, -1, 0, 3}, 3, 3};
-    Matrix d1{{4, 2, 0, -8, 0, 0, 1, 2, 3}, 3, 3};
+    Matrix d1{{4,2,0,5,4,-3,1,0,4}, 3, 3};
     Matrix e1{{-2, 2, 0, 5, -2, 3, -3, 0, -2}, 3, 3};
     ans = a1 * b1 == c1;
     CHECK(ans == true);
@@ -61,6 +61,9 @@ TEST_CASE("Good")
     Matrix mat5a{{2, 3, 4, 5, 6, 7}, 2, 3};
     ans = mat5 == mat5a;
     CHECK(ans == true);
+}
+TEST_CASE("goodinput"){
+
 }
 
 TEST_CASE("Bad")
@@ -84,3 +87,5 @@ TEST_CASE("Bad")
     CHECK_THROWS(mat6 + mat2);
     CHECK_THROWS(mat6 - mat2);
 }
+
+

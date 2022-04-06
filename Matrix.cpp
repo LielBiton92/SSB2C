@@ -81,7 +81,7 @@ Matrix Matrix::operator-(const Matrix &mat1)
 void Matrix::operator-=(const Matrix &mat1)
 {
     check_matrix_size(*this, mat1);
-    for (unsigned int i = 0; i < this->row; i++)
+    for (unsigned int i = 0; i < this->mat.size(); i++)
     {
         this->mat[i] -= mat1.mat[i];
     }
@@ -101,7 +101,7 @@ Matrix Matrix::operator+(const Matrix &mat1)
 {
     check_matrix_size(*this, mat1);
     Matrix matr(this->row, this->col);
-    for (unsigned int i = 0; i < mat1.row; i++)
+    for (unsigned int i = 0; i < this->mat.size() ;i++)
     {
         matr.mat.push_back(this->mat[i] + mat1.mat[i]);
     }
@@ -122,7 +122,6 @@ void Matrix::operator+=(const Matrix &mat1)
 
 bool zich::Matrix::operator!=(const Matrix &mat1)
 {
-    check_matrix_size(*this, mat1);
     for (unsigned int i = 0; i < this->mat.size(); i++)
     {
         if (this->mat[i] != mat1.mat[i])
@@ -134,7 +133,6 @@ bool zich::Matrix::operator!=(const Matrix &mat1)
 }
 bool zich::Matrix::operator==(const Matrix &mat1)
 {
-    check_matrix_size(*this, mat1);
     for (unsigned int i = 0; i < this->mat.size(); i++)
     {
         if (this->mat[i] != mat1.mat[i])
@@ -239,8 +237,9 @@ void Matrix::operator++(const int d)
 
 Matrix Matrix::operator*(const Matrix &mat1)
 {
+    double s = 0;
     check_valid_mult(*this, mat1);
-    Matrix matr(this->row, this->col);
+    Matrix matr(this->row, mat1.col);
     for (unsigned int i = 0; i < this->mat.size(); i++)
     {
         matr.mat.push_back(0);
@@ -250,9 +249,10 @@ Matrix Matrix::operator*(const Matrix &mat1)
     {
         for (unsigned int j = 0; j < mat1.col; j++)
         {
-            for (unsigned int k = 0; k < this->row; k++)
+            s = 0;
+            for (unsigned int k = 0; k < this->col; k++)
             {
-                matr.mat[i * (unsigned int)this->row + j] += this->mat[i * (unsigned int)this->row + k] * mat1.mat[k * (unsigned int)this->row + j];
+                matr.mat[i * (unsigned int)matr.col + j] += this->mat[i * (unsigned int)this->col + k] * mat1.mat[k * (unsigned int)mat1.col + j];
             }
         }
     }
@@ -263,7 +263,7 @@ Matrix Matrix::operator*(const Matrix &mat1)
 void Matrix::operator*=(const Matrix &mat1)
 {
     check_valid_mult(*this, mat1);
-    Matrix matr(this->row, this->col);
+    Matrix matr(this->row, mat1.col);
     for (unsigned int i = 0; i < this->mat.size(); i++)
     {
         matr.mat.push_back(0);
@@ -273,18 +273,19 @@ void Matrix::operator*=(const Matrix &mat1)
     {
         for (unsigned int j = 0; j < mat1.col; j++)
         {
-            for (unsigned int k = 0; k < this->row; k++)
+            for (unsigned int k = 0; k < this->col; k++)
             {
-                this->mat[i * (unsigned int)this->row + j] += this->mat[i * (unsigned int)this->row + k] * mat1.mat[k * (unsigned int)this->row + j];
+                matr.mat[i * (unsigned int)matr.col + j] += this->mat[i * (unsigned int)this->col + k] * mat1.mat[k * (unsigned int)mat1.col + j];
             }
         }
     }
+    this->mat=matr.mat;
 }
 void Matrix::operator*=(const double d)
 {
     for (unsigned int i = 0; i < this->mat.size(); i++)
     {
-        this->mat[i] *= (d) * (this->mat[i]);
+        this->mat[i] = (d) * (this->mat[i]);
     }
 }
 
@@ -313,7 +314,7 @@ namespace zich
             res += '[';
             for (unsigned int j = 0; j < num.col; j++)
             {
-                res += to_string(num.mat[i * (unsigned int)num.row + j]);
+                res += to_string(num.mat[i * (unsigned int)num.col + j]);
                 if (j != num.col - 1)
                 {
                     res += " ";
